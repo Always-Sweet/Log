@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="false" scanPeriod="60000" debug="false">
+    <!-- 属性管理 -->
+    <property name="file_url" value="./log/1.log" />
+    <appender name="console_out" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="file_out" class="ch.qos.logback.core.FileAppender">
+        <file>${file_url}</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="rolling_out" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 滚动规则 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>rolling-file-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 最大历史文件数 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug" />
+
+    <!-- 更细粒度的level会覆盖上层level -->
+    <logger name="org.example.org.example.LogDemo" level="debug" additivity="true" />
+
+     同名的logger会被xml配置按顺序覆盖
+    <logger name="org.example" level="debug" additivity="false">
+        <appender-ref ref="console_out" />
+    </logger>
+    <logger name="org.example" level="info" additivity="false">
+        <appender-ref ref="console_out" />
+    </logger>
+
+    <logger name="org.example2.LogDemo2" level="warn" additivity="false">
+        <appender-ref ref="rolling_out" />
+    </logger>
+    <logger name="org" level="info" additivity="false">
+        <appender-ref ref="file_out" />
+    </logger>
+</configuration>
