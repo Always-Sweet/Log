@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration status="warn" monitorInterval="5">
+
+    <properties>
+        <property name="LOG_HOME">./logs</property>
+    </properties>
+
+    <Appenders>
+        <!-- 日志文件输出 appender -->
+        <File name="file" fileName="${LOG_HOME}/myfile.log">
+            <!--<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %l %c{36} - %m%n" />-->
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
+        </File>
+
+        <Async name="Async">
+            <AppenderRef ref="file" />
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Async" />
+        </Root>
+    </Loggers>
+
+</configuration>
